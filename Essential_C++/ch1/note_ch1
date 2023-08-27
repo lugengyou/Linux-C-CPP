@@ -1,0 +1,235 @@
+                                            
+                                            Essential C++
+
+                                        chapter 1 C++ 编成基础
+
+
+# ********************************* chapter 1.1 如何撰写 C++ 程序 ********************************* #
+
+# 函数相关
+
+    * 函数：返回值、函数名称、参数列表、函数体
+    * mian ：返回 0 函数执行正确
+    * std ：标准库所驻之命名空间的名称，标准库所提供的任何事物都被封装在命名空间 std 内
+    * namespace ：一种将库名称封装起来的方法，可以避免和应用程序发生命名冲突的问题
+
+
+
+# ********************************* chapter 1.2 对象的定义与初始化 ********************************* #
+
+# 对象初始化
+
+    1） 赋值初始化
+        int num = 0;
+    2） 构造函数初始化 -> 提供多值初始化的可能，如：复数
+        int num(0);
+
+# 标准库复数类型
+
+    #include <complex>
+    complex<double> purei(0, 7); // 模板类
+
+# 固定值不变类型
+
+    // 在获取初值后无法再改变
+    const double pi = 3.14159;
+
+
+
+# ********************************* chapter 1.3 撰写表达式 ********************************* #
+
+# 内置数据类型运算
+    算术运算符  关系运算符  逻辑运算符  复合赋值运算符
+
+# 算术运算符
+    +   -   *   /   %
+    整数除法和求余特殊
+    5 / 3 = 1 （商）
+    5 % 3 = 2 （余）
+
+# 条件运算符
+    expr ? true_exe : false_exe
+
+# 复合赋值运算符
+    1）复合运算符与每个算术运算符结合
+        +=  -=  *=  /=  %=
+    2）递增运算符和递减运算符
+        前置 ++val  --val
+            原值先递增，再被使用
+        后置 val++  val--
+            原值先被使用，再递增
+        
+# 关系运算符
+    ==  !=  <   >   <=  >=
+    运算结果不是 true 就是 false
+
+# 逻辑运算符
+    &&  ||  !
+    用于同时处理多个表达式条件，运算顺序为从左到右
+
+# 运算符优先级
+    逻辑非  !
+    算术    *, /, %
+    算术    +, -
+    关系    <, >, <=, >=
+    关系    ==, !=
+    逻辑与  &&
+    逻辑或  ||
+    赋值    =
+
+# 判断 ival 是否是偶数
+    ! ival % 2  // false, ! 的优先级大于 %
+    ! (ival % 2)    // true, () 改变运算符运算次序
+
+
+
+# ********************************* chapter 1.4 条件语句和循环语句 ********************************* #
+
+# if-else-if 语句
+    1）if 语句不加 {} 限定程序块，则只有 if 后跟着第一个 ";" 结束的语句属于 if 判断范围内，其后语句均会不经过判断执行
+    2）由于 1）的特殊性，也就参生 else if 的条件判断，其实是 if 如下形式的执行 
+        if ()
+            ...
+        else
+        if ()
+            ...
+        else
+            ...
+
+# switch-case 语句
+    1）格式
+        switch ( val )
+        {
+            case c1:
+                ...
+                break;
+            case c2:
+                ...
+                break;
+                .
+                .
+                .
+            default:
+                ...
+                break;
+        }
+    2）switch 执行机制
+        每个 case 的标签均会依次和 switch 的表达式进行比较；
+        若不添加 break，当某个标签和 switch 的表达式值吻合，该 case 标签之后的所有 case 标签也会被执行，除非添加 break 来结束执行；
+        可用于设置多种 case 满足其一，均参生响应的程序设计
+
+# while 循环
+    使用 break 可以跳出 while 循环
+    使用 continue 可以跳过当前迭代
+
+
+# ********************************* chapter 1.5 如何运用 Array 和 Vector  ********************************* #
+
+# 定义 Array
+    1）指定 array 的元素类型，给予 array 一个名称，并指定其尺度大小（即元素个数）；
+        array 大小必须是个常量表达式（即不需要在运行时求值的表达式）
+    2）格式
+        const int seq_size = 18;
+        int pell_seq[seq_size]; // 默认初始化为 0
+        int pell_seq[seq_size] = {1, 2, 3}; // 小于 array 大小部分的元素默认初始化为 0
+        int pell_seq[] = {1, 2, 3}; // 根据给定元素，程序自分配 array 大小
+
+# 定义 vector
+    1）必须包含 vector 头文件；
+        vector 是一个模板类（class template），必须在类名的尖括号指定其元素类型，大小写在小括号内；
+        vector 所给大小并不一定是个常量表达式；
+        vector 可以通过 size() 获取大小
+    2）格式
+        #include <vector>
+        vector<int> pell_seq(seq_size); // 默认初始化为 0
+        # ！！！ vector 不支持 array 的 {} 初始化
+        pell_seq[0] = 1; // 手动单个元素赋值初始化
+        # elems_vals 为数组名（即数组的初始地址），elems_vals+seq_size 为数组最后的地址（即数组内存的末尾地址，左开右闭）
+        vector<int> elem_seq(elems_vals, elems_vals+seq_size); // 使用 array 的地址初始化
+
+# for 循环语句
+    1）格式
+        for(init-statement; condition; expression)
+            statement
+        init-statement: 会在循环开始执行前被执行一次
+        condition: 用于循环控制，其值会在每次循环迭代之前被计算出来；根据 true/false 是否执行 statement
+        expression: 会在循环每次结束之后被求值；用来改变 init-statement 和 condition 中对象的值
+    2）for 循环构建 while 循环构建
+        for( ; ; ;) <=> while(true)
+
+
+# ********************************* chapter 1.6 指针带来弹性  ********************************* #
+
+1）指针为程序引入了一层间接性
+    定义指针：
+        int *pi;    // pi 是个 int 类型对象的指针
+    变量取址：
+        int ival;
+        int *pi = &ival;    // 将 pi 初始化为 ival 所在的地址
+    提领指针指向的对象：
+        *pi;    //  获取 pi 指向的对象
+
+2）使用指针注意事项
+    定义指针不指向任何对象时，将其设为 null 指针，避免写 *pi 导致程序在运行时出错
+        int *pi = 0;    //  初始化 pi 为 null 指针
+    使用前判断是否为 null 指针，避免对 null 指针进行防止
+        if ( pi && ...)
+        if ( !pi )    // pi 为 null 指针时为 true
+
+3）定义指针数组
+    const int seq_cnt = 6;
+    ;// seq_addrs 是个 array，其元素类型为 vector<int> *
+    vector<int> *seq_addrs[seq_cnt] = {&s1, &s2, &s3, &s4, &s5, &s6};   
+
+4）C 语言标准库 srand() 和 rand() 生成随机数
+    #include <cstdlib>
+
+    srand( seq_cnt );   // 设置随机数生成器种子 seed
+    seq_index = rand() % seq_cnt;   // 返回一个介于 0 和 seq_cnt 间的一个整数， % 限定为 [0, seq_cnt)
+
+5）类对象指针使用
+    类对象具有可调用的操作，在类对象中可以通过 dot 成员选择运算符，选择想要调用的操作
+        vector<int> seq1[6]={0,1,2,3,4,5};
+        seq1.empty();   // 使用 vector 的 empty() 成员操作
+        vector<int> *pv1 = &seq1;
+        pv1->empty();   // 指针通过 arrow 进行成员操作选择
+
+
+# ********************************* chapter 1.7 文件读写  ********************************* #
+
+1）常用文件读写
+    进行文件读写首先包含 fstream 头文件
+        #include <fstream>
+
+2）文件输出
+    # ofstream 定义文件输出对象
+        ofstream outfile("file_name.txt");
+    # 追加方式打开
+        ofstream outfile("file_name.txt", ios_base::app);
+    # 检查打开是否成功打开
+        if(!outfile)    // outfile=false，打开失败
+    # 打开失败，可使用 cerr 输出错误提示
+        if(!outfile)
+            cerr << "error for openning this file.\n";  // cerr 输出结果无缓冲形式; cout 需要使用 endl 清除输出缓冲区
+        else
+            ...
+
+3）文件读入
+    # ifstream 定义文件读入对象
+        ifstream infile("file.txt");    // 打开失败 infile=false
+
+4）同一文件同时读写
+    fstream iofile("file.txt", ios_base::in | ios_base::app)
+    以追加形式打开文件，指针默认偏移到文件末尾，使用 seekg() 操作可以指定指针位置
+    # 偏移指针到文件开头
+        iofile.seekg(0);
+
+
+
+
+
+
+
+
+
+
