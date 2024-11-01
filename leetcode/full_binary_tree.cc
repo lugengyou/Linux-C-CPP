@@ -2,7 +2,7 @@
  * @Author: gengyou.lu 1770591868@qq.com
  * @Date: 2024-10-18 23:03:17
  * @FilePath: /leetcode/full_binary_tree.cc
- * @LastEditTime: 2024-10-19 00:05:22
+ * @LastEditTime: 2024-11-01 16:50:01
  * @Description: 输入一个满二叉树层序遍历的结果数组，构建满二叉树，并使用层序遍历输出结果
  */
 /*
@@ -112,6 +112,16 @@ void preIter(TreeNode* root, vector<int>& nums) {
     }
 }
 
+void preIterFull(const vector<int>& nums, int i, int n, vector<int>& res) {
+    if (i >= n) {
+        return;
+    }
+    //前序遍历完全二叉树
+    res.push_back(nums[i]); // 中
+    preIterFull(nums, 2 * i + 1, n, res); // 左
+    preIterFull(nums, 2 * i + 2, n, res); // 右
+}
+
 int main() {
     int n;
     cin >> n;
@@ -135,6 +145,14 @@ int main() {
     vector<int> pre_result;
     preIter(root, pre_result);    
     for (auto& i : pre_result) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    cout << "前序遍历2：" << endl;
+    vector<int> res;    
+    preIterFull(inputs, 0, inputs.size(), res);    
+    for (auto& i : res) {
         cout << i << " ";
     }
     cout << endl;
